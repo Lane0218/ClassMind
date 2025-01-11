@@ -4,7 +4,7 @@
         <!-- default-active默认菜单栏需要修改 -->
         <el-menu :default-active="isactiveMenu" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
             :collapse="isCollapse" background-color="#f0f4f8" text-color="#333" active-text-color="#50a3ff">
-            <h3>{{ isCollapse ? '' : '智慧课堂教学系统' }}</h3>
+            <h3>{{ isCollapse ? '' : 'ClassMind' }}</h3>
             <!-- 一级索引 -->
             <el-menu-item v-for="item in noChildren" :key="item.name" :index="item.name" @click="clickMenu(item)">
                 <i :class="`el-icon-${item.icon}`"></i>
@@ -131,6 +131,7 @@ export default {
 <style lang="less" scoped>
 .el-menu {
     height: 100vh;
+    width: 200px;
     display: flexbox;
     border-right: 0cap;
 
