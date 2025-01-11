@@ -54,15 +54,15 @@ export default {
         return {
             //数量信息待传参
             schoolData: [{
-                name: '教师总数',
+                name: '学生总数',
                 number: 1000
             },
             {
-                name: '课程总数',
+                name: '教师总数',
                 number: 10086
             },
             {
-                name: '视频总数',
+                name: '课程总数',
                 number: 10
             },
             {
