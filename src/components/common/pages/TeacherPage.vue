@@ -1,11 +1,20 @@
 <template>
     <div>
         <el-card class="box-card">
-            <div slot="header" class="clearfix">
+            <div slot="header" class="clearfix" style="height: 30px;">
                 <span>教师管理</span>
-                <el-button style="float: right; padding: 3px 0" type="text" @click="fetchTeachers">刷新</el-button>
-                <el-button style="float: right; padding: 3px 15px; margin-right: 10px" type="primary"
+                <el-button style="float: right; padding: 3px 15px; margin-right: 10px;height: 40px;" type="primary"
                     @click="openAddDialog">添加教师</el-button>
+
+                <el-button style="float: right; padding: 3px 10px; height: 40px;margin-right: 40px;"
+                    @click="fetchTeachers">筛选</el-button>
+                <el-input v-model="filterValue" placeholder="请输入筛选值"
+                    style="float: right; margin-right: 0px; width: 125px; height: 10px;"></el-input>
+                <el-select v-model="filterField" placeholder="请选择筛选字段"
+                    style="float: right; margin-right: 10px; width: 145px;">
+                    <el-option label="统一认证帐号" value="id"></el-option>
+                    <el-option label="姓名" value="name"></el-option>
+                </el-select>
             </div>
             <el-table :data="teachers" style="width: 100%" :row-style="{ height: '0' }" :cell-style="{ padding: '0' }">
                 <el-table-column prop="id" label="统一认证帐号" width="180"></el-table-column>
@@ -71,13 +80,19 @@ export default {
             showEditDialog: false,
             currentPage: 1,
             pageSize: 10,
-            total: 0
+            total: 0,
+            filterField: '',
+            filterValue: '',
         };
     },
     methods: {
         fetchTeachers() {
-            const { currentPage, pageSize } = this;
-            this.$axios.get(`http://127.0.0.1:5000/teachers?page=${currentPage}&size=${pageSize}`)
+            const { currentPage, pageSize, filterField, filterValue } = this;
+            let url = `http://127.0.0.1:5000/teachers?page=${currentPage}&size=${pageSize}`;
+            if (filterField && filterValue) {
+                url += `&filterField=${filterField}&filterValue=${filterValue}`;
+            }
+            this.$axios.get(url)
                 .then(response => {
                     this.teachers = response.data.data;
                     this.total = response.data.total;
