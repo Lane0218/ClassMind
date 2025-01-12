@@ -9,11 +9,21 @@
                     @click="openUploadDialog">上传视频</el-button>
             </div>
             <el-table :data="videos" style="width: 100%">
-                <el-table-column prop="id" label="视频编号" width="180"></el-table-column>
-                <el-table-column prop="url" label="视频名称" width="130"></el-table-column>
-                <el-table-column prop="c_id" label="课程编号" width="100"></el-table-column>
-                <el-table-column prop="c_name" label="课程名称" width="120"></el-table-column>
-                <el-table-column label="上传时间" width="180">
+                <el-table-column prop="id" label="视频编号" width="100"></el-table-column>
+                <el-table-column prop="url" label="视频名称" width="100"></el-table-column>
+                <el-table-column label="视频时长" width="80">
+                    <template slot-scope="scope">
+                        {{ formatDuration(scope.row.duration) }}
+                    </template>
+                </el-table-column>
+                <el-table-column prop="size" label="视频大小" width="80">
+                    <template slot-scope="scope">
+                        {{ formatSize(scope.row.size) }}
+                    </template>
+                </el-table-column>
+                <el-table-column prop="c_id" label="课程编号" width="80"></el-table-column>
+                <el-table-column prop="c_name" label="课程名称" width="100"></el-table-column>
+                <el-table-column label="上传时间" width="150">
                     <template slot-scope="scope">
                         {{ formatDate(scope.row.upload_time) }}
                     </template>
@@ -68,7 +78,8 @@ export default {
             this.uploadedFile.push({
                 file: file.raw,
                 name: file.name,
-                url: `${file.name}`
+                url: `${file.name}`,
+                size: file.size / 1024 / 1024
             });
         },
         submitUpload() {
@@ -85,7 +96,7 @@ export default {
                 return;
             }
             const isMP4 = this.uploadedFile[0].file.type === 'video/mp4';
-            const isLt500M = this.uploadedFile[0].file.size / 1024 / 1024 < 500;
+            const isLt500M = this.uploadedFile[0].size < 500;
             if (!isMP4) {
                 this.$message.error('只能上传mp4文件');
                 return;
@@ -108,7 +119,8 @@ export default {
                         videos: this.uploadedFile.map(file => ({
                             // url: response.data.url,
                             url: file.url,
-                            c_id: this.courseId
+                            c_id: this.courseId,
+                            size: file.size
                         }))
                     })
                         .then(response => {
@@ -158,6 +170,14 @@ export default {
         formatDate(dateString) {
             const date = new Date(dateString);
             return date.toISOString().replace('T', ' ').substring(0, 19);
+        },
+        formatDuration(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${minutes}:${secs.toString().padStart(2, '0')}`;
+        },
+        formatSize(size) {
+            return `${size}MB`;
         },
     },
     created() {
