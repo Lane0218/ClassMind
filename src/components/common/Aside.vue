@@ -6,10 +6,11 @@
             :collapse="isCollapse" background-color="#f0f4f8" text-color="#333" active-text-color="#50a3ff">
             <h3>{{ isCollapse ? '' : 'ClassMind' }}</h3>
             <!-- 一级索引 -->
-            <el-menu-item v-for="item in noChildren" :key="item.name" :index="item.name" @click="clickMenu(item)">
-                <i :class="`el-icon-${item.icon}`"></i>
-                <span slot="title">{{ item.label }}</span>
+            <el-menu-item :key="noChildren[0].name" :index="noChildren[0].name" @click="clickMenu(noChildren[0])">
+                <i :class="`el-icon-${noChildren[0].icon}`"></i>
+                <span slot="title">{{ noChildren[0].label }}</span>
             </el-menu-item>
+
             <!-- 带有二级索引 -->
             <el-submenu v-for="item in hasChildren" :key="item.name" :index="item.name">
                 <template slot="title">
@@ -21,6 +22,13 @@
                     <el-menu-item :index="subItem.name" @click="clickMenu(subItem)">{{ subItem.label }}</el-menu-item>
                 </el-menu-item-group>
             </el-submenu>
+            <!-- 一级索引 -->
+            <el-menu-item v-for="item in noChildren.filter((_, index) => index !== 0)" :key="item.name"
+                :index="item.name" @click="clickMenu(item)">
+                <i :class="`el-icon-${item.icon}`"></i>
+                <span slot="title">{{ item.label }}</span>
+            </el-menu-item>
+
         </el-menu>
     </div>
 </template>
@@ -68,26 +76,33 @@ export default {
                 path: '/course',
             },
             {
-                label: '数据管理',
+                label: '大模型分析',
                 icon: 's-data',
                 name: 'data',
-                children: [
-                    {
-                        path: '/video',
-                        name: 'video',
-                        label: '视频管理',
-                        // icon: 'setting',
-                        url: '/video'
-                    },
-                    {
-                        path: '/analysis',
-                        name: 'analysis',
-                        label: '数据分析',
-                        // icon: 'setting',
-                        url: '/analysis'
-                    },
-                ]
-            }
+                path: '/video',
+            },
+
+                // {
+                //     label: '数据管理',
+                //     icon: 's-data',
+                //     name: 'data',
+                //     children: [
+                //         {
+                //             path: '/video',
+                //             name: 'video',
+                //             label: '视频管理',
+                //             // icon: 'setting',
+                //             url: '/video'
+                //         },
+                //         {
+                //             path: '/analysis',
+                //             name: 'analysis',
+                //             label: '数据分析',
+                //             // icon: 'setting',
+                //             url: '/analysis'
+                //         },
+                //     ]
+                // }
             ]
         };
     },
