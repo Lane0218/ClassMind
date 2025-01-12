@@ -85,7 +85,7 @@ form.sign-in-form {
     grid-row: 1 / 2;
     padding: 0 5rem;
     overflow: hidden;
-    transition: 0.2s 0.7s ease-in-out;
+    /* transition: 0.2s 0.7s ease-in-out; */
 }
 
 form.sign-in-form {
@@ -103,7 +103,7 @@ form.sign-in-form {
     right: 48%;
     transform: translateY(-50%);
     z-index: 0;
-    transition: 1.8s ease-in-out;
+    /* transition: 1.8s ease-in-out; */
 }
 
 .title {
@@ -178,7 +178,7 @@ form.sign-in-form {
     display: grid;
     grid-template-columns: 1fr;
     z-index: 5;
-    transition: 1s 0.7s ease-in-out;
+    /* transition: 1s 0.7s ease-in-out; */
 }
 
 .panels-container {
@@ -209,7 +209,7 @@ form.sign-in-form {
 
 .panel .content {
     color: #fff;
-    transition: .9s .6s ease-in-out;
+    /* transition: .9s .6s ease-in-out; */
 }
 
 .panel h3 {
@@ -235,12 +235,12 @@ form.sign-in-form {
 
 .right-panel {
     padding: 3rem 12% 2rem 17%;
-    pointer-events: none;
+    /* pointer-events: none; */
 }
 
 .image_sign_in {
     width: 100%;
-    transition: 1.1s .4s ease-in-out;
+    /* transition: 1.1s .4s ease-in-out; */
 }
 
 
@@ -291,7 +291,16 @@ export default {
                 })
                 .catch(error => {
                     console.error(error);
-                    alert('登录失败，请检查网络连接或联系管理员');
+                    if (error.response) {
+                        // 请求已发出，服务器响应的状态码不在 2xx 范围内
+                        alert(error.response.data.message);
+                    } else if (error.request) {
+                        // 请求已发出，但没有收到响应
+                        alert('登录失败，请检查网络连接或联系管理员');
+                    } else {
+                        // 在设置请求时触发了错误
+                        alert('登录失败，请检查网络连接或联系管理员');
+                    }
                 });
         },
         toRegister() {

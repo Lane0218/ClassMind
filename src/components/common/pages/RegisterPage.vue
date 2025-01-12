@@ -1,22 +1,22 @@
 <template>
     <div class="container_2">
         <div class="forms-container_2">
-            <div class="signup">
+            <div class="signup" id="app">
                 <form action="" class="sign-up-form">
                     <h2 class="title">ClassMind</h2>
-                    <div class="input-field">
+                    <div class="input-field_2">
                         <div class="el-icon-user-solid" style="font-size: 24px; margin-top: 15px; margin-left: 15px;">
                         </div>
                         <input type="username" placeholder="用户名" v-model="username">
                     </div>
-                    <div class="input-field">
+                    <div class="input-field_2">
                         <div class="el-icon-key" style="font-size: 24px; margin-top: 15px; margin-left: 15px;"></div>
                         <input type="password" placeholder="密码" v-model="password">
                     </div>
-                    <div class="input-field">
+                    <div class="input-field_2">
                         <div class="el-icon-s-custom" style="font-size: 24px; margin-top: 15px; margin-left: 15px;">
                         </div>
-                        <select v-model="type" class="custom-select"
+                        <select v-model="type" class="custom-select_1"
                             style="width: calc(100% - 50px); height: 55px; border-radius: 55px; padding-left: 5px; font-size: 1.1rem; color: #333; background-color: #f0f0f0; border: none; outline: none; margin-left: -8px;">
                             <option value="" disabled selected>人员类别</option>
                             <option value="0">管理员</option>
@@ -32,14 +32,12 @@
         </div>
         <div class="panels-container_2">
             <div class="panel right-panel">
-                <div class="content_sign_up">
+                <div class="content_sign_up" style="margin-top: 20px; margin-right:-550px;">
                     <h3>
-                        Aleady have an account?
+                        已经注册过账号?
                     </h3>
-                    <p>If you aleady have an account,
-                        <br>Please use your username and password to login.
-                    </p>
-                    <button class="btn transparent" id="sign-in-btn" @click="toLogin">登录</button>
+                    <button class="btn transparent" id="sign-in-btn"
+                        style="margin-top: 30px; margin-right: 10px; font-size: 16px;" @click="toLogin">登录</button>
                 </div>
                 <img src="../../../assets/images/student.svg" class="image_sign_up">
             </div>
@@ -88,7 +86,7 @@ form.sign-up-form {
     padding: 0 5rem;
     overflow: hidden;
     /* transition: 0.2s 0.7s ease-in-out; */
-    z-index: 10;
+    /* z-index: 10; */
     /* 确保表单在最上层 */
 }
 
@@ -104,20 +102,10 @@ form.sign-up-form {
     left: 48%;
     transform: translateY(-50%);
     z-index: 0;
-    transition: 1.8s ease-in-out;
 }
 
 form.sign-up-form {
-    /* z-index: -100;
-    opacity: 0; */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    /* grid-column: 1 /2;
-    grid-row: 1 / 2; */
-    padding: 0 5rem;
-    /* overflow: hidden; */
+    z-index: 2;
 }
 
 
@@ -128,7 +116,7 @@ form.sign-up-form {
     margin-bottom: 10px;
 }
 
-.input-field {
+.input-field_2 {
     max-width: 380px;
     width: 100%;
     height: 55px;
@@ -141,7 +129,7 @@ form.sign-up-form {
 }
 
 
-.input-field i {
+.input-field_2 i {
     text-align: center;
     line-height: 55px;
     color: #acacac;
@@ -149,7 +137,7 @@ form.sign-up-form {
 
 }
 
-.input-field input {
+.input-field_2 input {
     background: none;
     outline: none;
     border: none;
@@ -159,7 +147,7 @@ form.sign-up-form {
     color: #333;
 }
 
-.input-field input::placeholder {
+.input-field_2 input::placeholder {
     color: #aaa;
     font-weight: 380;
 }
@@ -183,12 +171,23 @@ form.sign-up-form {
     background-color: #4d84e2;
 }
 
+.signup {
+    position: absolute;
+    top: 45%;
+    right: -10%;
+    transform: translate(-50%, -50%);
+    width: 70%;
+    display: grid;
+    grid-template-columns: 1fr;
+    z-index: 7;
+}
+
 .panels-container_2 {
     position: absolute;
     width: 100%;
     height: 100%;
     top: 0;
-    left: 0;
+    right: 0;
 
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -205,8 +204,6 @@ form.sign-up-form {
 
 .panel .content_sign_up {
     color: #fff;
-    /* transition: .9s .6s ease-in-out; */
-    /* z-index: -100; */
     margin-right: -145%;
 }
 
@@ -232,17 +229,15 @@ form.sign-up-form {
 }
 
 .right-panel {
+    pointer-events: all;
     padding: 3rem 12% 2rem 17%;
-    /* pointer-events: none; */
 }
 
 .image_sign_up {
     width: 100%;
     margin-right: 100%;
-    /* transition: 1.1s .4s ease-in-out; */
 }
 
-.right-panel .content,
 .right-panel .image_sign_up {
     transform: translateX(1000px);
 }
@@ -279,7 +274,16 @@ export default {
                 })
                 .catch(error => {
                     console.error(error);
-                    alert('注册失败，请检查网络连接或联系管理员');
+                    if (error.response) {
+                        // 请求已发出，服务器响应的状态码不在 2xx 范围内
+                        alert(error.response.data.message);
+                    } else if (error.request) {
+                        // 请求已发出，但没有收到响应
+                        alert('注册失败，请检查网络连接或联系管理员');
+                    } else {
+                        // 在设置请求时触发了错误
+                        alert('注册失败，请检查网络连接或联系管理员');
+                    }
                 });
         },
         toLogin() {
