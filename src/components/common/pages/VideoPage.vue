@@ -30,24 +30,40 @@
                 </el-table-column>
                 <el-table-column label="操作" width="100">
                     <template slot-scope="scope">
-                        <el-button type="text" @click="deleteVideo(scope.row.id)">删除</el-button>
+                        <div>
+                            <el-button type="text" @click="deleteVideo(scope.row.id)"
+                                style="height: 10px;">删除</el-button>
+                        </div>
+                        <div>
+                            <el-button type="text" @click="startAnalysis(scope.row)"
+                                style="height: 10px;">大模型分析</el-button>
+                        </div>
                     </template>
                 </el-table-column>
             </el-table>
         </el-card>
 
         <!-- 上传视频对话框 -->
-        <el-dialog title="上传视频" :visible.sync="showUploadDialog">
+        <el-dialog title="上传视频" :visible.sync="showUploadDialog" width="400px">
             <el-upload class="upload-demo" drag action="http://127.0.0.1:5000/upload_video" multiple
                 :on-change="handleFileChange" :auto-upload="false">
                 <i class="el-icon-upload"></i>
-                <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                <div class="el-upload__tip" slot="tip">只能上传mp4文件，且不超过500MB</div>
+                <div class="el-upload__text">将视频拖到此处，或<em>点击上传</em></div>
+                <div class="el-upload__tip" slot="tip">只能上传mp4文件，且不超过500MB，一次只能上传一个视频</div>
             </el-upload>
-            <el-input v-model="courseId" placeholder="请输入课程ID" style="margin-top: 20px;"></el-input>
+            <el-input v-model="courseId" placeholder="请输入课程编号" style="margin-top: 20px; width: 100%;"></el-input>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="closeUploadDialog">取消</el-button>
                 <el-button type="primary" @click="submitUpload">上传</el-button>
+            </div>
+        </el-dialog>
+
+        <!-- 分析进度对话框 -->
+        <el-dialog title="正在使用大模型分析，请稍候" :visible.sync="showAnalysisDialog" width="30%">
+            <el-progress :percentage="Math.round(analysisProgress)"></el-progress>
+            <div v-if="analysisComplete" style="margin-top: 40px;">
+                <el-button type="primary" @click="reanalyzeVideo" style="margin-left: 20px;">重新分析</el-button>
+                <el-button type="success" @click="showResults" style="margin-left: 40px;">显示结果</el-button>
             </div>
         </el-dialog>
     </div>
@@ -60,7 +76,11 @@ export default {
             videos: [],
             courseId: '',
             uploadedFile: [],
-            showUploadDialog: false
+            showUploadDialog: false,
+            showAnalysisDialog: false,
+            analysisProgress: 0,
+            analysisComplete: false,
+            currentVideoId: null
         };
     },
     methods: {
@@ -179,9 +199,78 @@ export default {
         formatSize(size) {
             return `${size}MB`;
         },
+        startAnalysis(video) {
+            this.showAnalysisDialog = true;
+            this.currentVideoId = video.id;
+            this.analysisProgress = 0;
+            this.analysisComplete = false;
+            this.callBackendAnalysis(video.id, video.duration);
+        },
+        callBackendAnalysis(videoId, duration) {
+            this.$axios.post('http://127.0.0.1:5000/analyze_video', { videoId })
+                .then(response => {
+                    console.log('分析开始', response.data);
+                    this.startProgress(videoId, duration);
+                })
+                .catch(error => {
+                    console.error(error);
+                    this.$message.error(response.data);
+                    this.showAnalysisDialog = false;
+                });
+        },
+        startProgress(videoId, duration) {
+            const totalDuration = duration * 10;
+            this.analysisInterval = setInterval(() => {
+                if (this.analysisProgress + (200 / totalDuration) <= 50) {
+                    this.analysisProgress += (200 / totalDuration);
+                }
+                else if (this.analysisProgress + (200 / totalDuration * 1.5) <= 70) {
+                    this.analysisProgress += (200 / totalDuration * 1.5);
+                }
+                else if (this.analysisProgress + (200 / totalDuration / 2) <= 98) {
+                    this.analysisProgress += (200 / totalDuration / 2);
+                }
+            }, 2000);
+            this.checkAnalysisStatus(videoId);
+        },
+        checkAnalysisStatus(videoId) {
+            const checkInterval = setInterval(() => {
+                this.$axios.get(`http://127.0.0.1:5000/analysis_status/${videoId}`)
+                    .then(response => {
+                        if (response.data.complete) {
+                            this.analysisProgress = 100;
+                            clearInterval(checkInterval);
+                            this.analysisComplete = true;
+                            this.$message.success('分析完成');
+                        }
+                        else {
+                            this.$message.info('分析正在进行');
+                        }
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        this.$message.error('分析状态查询失败');
+                    });
+            }, 10000); // 每10秒检查一次分析状态
+        },
+        reanalyzeVideo() {
+            const video = this.videos.find(v => v.id === this.currentVideoId);
+            if (video) {
+                this.startAnalysis(video);
+            }
+        },
+        showResults() {
+            this.$router.push({ name: 'AnalysisResults', params: { videoId: this.currentVideoId } });
+        },
+        // ... 其他方法 ...
     },
     created() {
         this.fetchVideos();
+    },
+    beforeDestroy() {
+        if (this.analysisInterval) {
+            clearInterval(this.analysisInterval);
+        }
     }
 };
 </script>
