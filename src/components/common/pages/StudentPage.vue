@@ -30,7 +30,7 @@
                 </el-table-column>
             </el-table>
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                :current-page="currentPage" :page-sizes="[10, 20, 50]" :page-size="pageSize"
+                :current-page="currentPage" :page-sizes="[8, 15, 30]" :page-size="pageSize"
                 layout="total, sizes, prev, pager, next, jumper" :total="total" style="margin-top: 30px;">
             </el-pagination>
         </el-card>
@@ -98,7 +98,7 @@ export default {
             showAddDialog: false,
             showEditDialog: false,
             currentPage: 1,
-            pageSize: 10,
+            pageSize: 8,
             total: 0,
             filterField: '',
             filterValue: '',
