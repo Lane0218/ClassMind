@@ -129,7 +129,19 @@ export default {
             });
         },
         exportReport() {
-            alert('导出报告功能尚未实现');
+            // 文件的 URL
+            const fileUrl = '/behavior_report.docx';
+            // 创建一个 a 标签
+            const a = document.createElement('a');
+            // 设置 a 标签的 href 属性为文件 URL
+            a.href = fileUrl;
+            // 设置 a 标签的 download 属性为文件名
+            a.download = 'behavior_report.docx';
+            // 使用 JavaScript 触发点击事件
+            document.body.appendChild(a);
+            a.click();
+            // 移除 a 标签
+            document.body.removeChild(a);
         },
         formatDate(dateString) {
             const date = new Date(dateString);
