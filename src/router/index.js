@@ -15,6 +15,8 @@ import StudentPage from '@/components/common/pages/StudentPage.vue'
 import VideoPage from '@/components/common/pages/VideoPage.vue'
 import AnalysisPage from '@/components/common/pages/AnalysisPage.vue'
 
+import AnalysisResults from '@/components/common/AnalysisResults.vue'
+
 
 Vue.use(VueRouter)
 
@@ -64,7 +66,12 @@ const routes = [
       path: '/analysis',
       name: 'analysis',
       component: AnalysisPage
-    }
+    },
+    {
+      path: '/AnalysisResults/:videoId',
+      name: 'AnalysisResults',
+      component: AnalysisResults
+    },
     ]
   }
 ]

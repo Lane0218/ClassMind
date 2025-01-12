@@ -61,7 +61,8 @@
         <!-- 分析进度对话框 -->
         <el-dialog title="正在使用大模型分析，请稍候" :visible.sync="showAnalysisDialog" width="30%">
             <el-progress :percentage="Math.round(analysisProgress)"></el-progress>
-            <div v-if="analysisComplete" style="margin-top: 40px;">
+            <div style="margin-top: 40px;">
+                <!-- <div v-if="analysisComplete" style="margin-top: 40px;"> -->
                 <el-button type="primary" @click="reanalyzeVideo" style="margin-left: 20px;">重新分析</el-button>
                 <el-button type="success" @click="showResults" style="margin-left: 40px;">显示结果</el-button>
             </div>
