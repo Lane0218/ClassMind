@@ -132,7 +132,7 @@ export default {
                         data: [this.data['readingRate'], this.data['handsUpRate'], this.data['writingRate']]
                     }]
                 });
-            }, 3000); // 延迟 1000 毫秒（1 秒）
+            }, 1000); // 延迟 1000 毫秒（1 秒）
         },
         initPlayer() {
             setTimeout(() => {
@@ -142,7 +142,7 @@ export default {
                     width: 400,
                     height: 280
                 });
-            }, 5000); // 延迟 1000 毫秒（1 秒）
+            }, 1000); // 延迟 1000 毫秒（1 秒）
         },
         exportReport() {
             // 创建一个 a 标签
