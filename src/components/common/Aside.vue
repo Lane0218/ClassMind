@@ -4,9 +4,14 @@
         <!-- default-active默认菜单栏需要修改 -->
         <el-menu :default-active="isactiveMenu" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
             :collapse="isCollapse" background-color="#f0f4f8" text-color="#333" active-text-color="#50a3ff">
-            <h3>{{ isCollapse ? '' : 'ClassMind' }}</h3>
+            <!-- <h3>{{ isCollapse ? '' : 'ClassMind' }}</h3> -->
+            <span>
+                <img class='photo' src="@/assets/images/logo1.png"
+                    style="width: 150px; margin-top: 25px; margin-left: 20px;" />
+            </span>
             <!-- 一级索引 -->
-            <el-menu-item :key="noChildren[0].name" :index="noChildren[0].name" @click="clickMenu(noChildren[0])">
+            <el-menu-item :key="noChildren[0].name" :index="noChildren[0].name" @click="clickMenu(noChildren[0])"
+                style="margin-top: 20px;">
                 <i :class="`el-icon-${noChildren[0].icon}`"></i>
                 <span slot="title">{{ noChildren[0].label }}</span>
             </el-menu-item>
@@ -156,6 +161,7 @@ export default {
         font-size: 22px;
         font-weight: 400;
         padding: 0 20px;
+        margin-top: 20px;
     }
 }
 </style>

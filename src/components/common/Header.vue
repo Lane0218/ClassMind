@@ -1,7 +1,7 @@
 <!-- 头部栏 -->
 <template>
     <div class="header-container">
-        <div class="l-content">
+        <!-- <div class="l-content">
             <el-button icon="el-icon-menu" size="medium" style="margin-left: 20px;" @click="handleMenu"></el-button>
             <el-breadcrumb separator="/" style="padding-left: 20px;">
                 <el-breadcrumb-item v-for="item in tags" :key="item.path" v-if="item.label != '首页'"
@@ -9,17 +9,14 @@
                         item.label
                     }}</el-breadcrumb-item>
             </el-breadcrumb>
-        </div>
+        </div> -->
         <div class="r-content">
-            <el-dropdown>
-                <span class="el-dropdown-link"><i class="el-icon-arrow-down el-icon--right"></i>
-                    <img class='photo' src="@/assets/images/logo.png" />
-                </span>
-                <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item>项目简介</el-dropdown-item>
-                    <el-dropdown-item>退出</el-dropdown-item>
-                </el-dropdown-menu>
-            </el-dropdown>
+            <span class="button">
+                <el-button type="text" @click="toLogin" style="margin-left: 850px; height: 100px; ">退出</el-button>
+            </span>
+            <!-- <span>
+                <img class='photo' src="@/assets/images/logo.png" />
+            </span> -->
         </div>
     </div>
 </template>
@@ -28,24 +25,6 @@
 import { mapState } from 'vuex'
 export default {
     name: 'Header',
-    // data() {
-    //     return {
-    //         authors: [
-    //             {
-    //                 name: '第三组'
-    //             },
-    //             {
-    //                 name: 'csy'
-    //             },
-    //             {
-    //                 name: 'chj'
-    //             },
-    //             {
-    //                 name: 'qzx'
-    //             }
-    //         ]
-    //     };
-    // },
     methods: {
         //缩放菜单
         handleMenu() {
@@ -92,6 +71,7 @@ export default {
             width: 40px;
             height: 40px;
             border-radius: 50%;
+            margin-top: 50px;
         }
     }
 
@@ -120,3 +100,13 @@ export default {
     }
 }
 </style>
+
+<script>
+export default {
+    methods: {
+        toLogin() {
+            this.$router.push('/Login');
+        }
+    }
+}
+</script>
