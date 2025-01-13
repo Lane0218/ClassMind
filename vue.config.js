@@ -1,4 +1,13 @@
 const { defineConfig } = require('@vue/cli-service')
-module.exports = defineConfig({
-  transpileDependencies: true
-})
+module.exports = {
+  transpileDependencies: true,
+  devServer: {
+    watchFiles: {
+      paths: ['src/**/*'],
+      options: {
+        poll: false,
+        ignored: [/node_modules/, /public/],
+      },
+    },
+  },
+}

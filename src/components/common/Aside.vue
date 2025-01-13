@@ -145,7 +145,7 @@ export default {
 
 <style lang="less" scoped>
 .el-menu {
-    height: 100vh;
+    height: 800px;
     width: 200px;
     display: flexbox;
     border-right: 0cap;
