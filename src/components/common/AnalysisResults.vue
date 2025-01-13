@@ -121,8 +121,30 @@ export default {
             setTimeout(() => {
                 const chart = echarts.init(this.$refs.chart);
                 console.log(this.data);
+                // chart.setOption({
+                //     tooltip: {},
+                //     xAxis: {
+                //         data: ['阅读率', '举手率', '书写率']
+                //     },
+                //     yAxis: {},
+                //     series: [{
+                //         type: 'bar',
+                //         data: [this.data['readingRate'], this.data['handsUpRate'], this.data['writingRate']]
+                //     }]
+                // });
                 chart.setOption({
-                    tooltip: {},
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'  // 默认为直线，可选为：'line' | 'shadow'
+                        },
+                        formatter: function (params) {
+                            // params是一个数组，包含每个系列的数据信息
+                            let label = params[0].name; // 获取当前的数据名称，如'阅读率'
+                            let value = params[0].data; // 获取当前的数据值
+                            return `${label} ${value}%`; // 返回自定义的提示框内容
+                        }
+                    },
                     xAxis: {
                         data: ['阅读率', '举手率', '书写率']
                     },

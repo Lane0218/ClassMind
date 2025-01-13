@@ -1,22 +1,10 @@
 <!-- 头部栏 -->
 <template>
     <div class="header-container">
-        <!-- <div class="l-content">
-            <el-button icon="el-icon-menu" size="medium" style="margin-left: 20px;" @click="handleMenu"></el-button>
-            <el-breadcrumb separator="/" style="padding-left: 20px;">
-                <el-breadcrumb-item v-for="item in tags" :key="item.path" v-if="item.label != '首页'"
-                    @click.native="handleBreadcrumbClick(item)">{{
-                        item.label
-                    }}</el-breadcrumb-item>
-            </el-breadcrumb>
-        </div> -->
         <div class="r-content">
             <span class="button">
                 <el-button type="text" @click="toLogin" style="margin-left: 850px; height: 100px; ">退出</el-button>
             </span>
-            <!-- <span>
-                <img class='photo' src="@/assets/images/logo.png" />
-            </span> -->
         </div>
     </div>
 </template>

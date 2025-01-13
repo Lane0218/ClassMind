@@ -16,6 +16,9 @@
                 </el-card>
                 <!-- 学员基本信息（节选）一览 -->
                 <el-card class="box-card" style="margin-top: 20px;">
+                    <div slot="header" class="clearfix">
+                        <span>明星课程</span>
+                    </div>
                     <el-table :data="courseData" border style="width: 100%">
                         <el-table-column prop="name" label="课程" width="auto">
                         </el-table-column>
