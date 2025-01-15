@@ -1,4 +1,4 @@
-# edu
+# ClassMind
 
 ## Project setup
 ```
